@@ -1,0 +1,14 @@
+**/.venv/
+venv/
+ENV/
+**/__pycache__/
+*.py[cod]
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+**/.env
+.streamlit/secrets.toml
+.DS_Store
+Thumbs.db
+
