@@ -11,4 +11,12 @@ ENV/
 .streamlit/secrets.toml
 .DS_Store
 Thumbs.db
-
+worker/aws/
+aws/
+.aws/
+*.so
+*.dylib
+*.dll
+*.mid
+*.midi
+*.log
