@@ -101,6 +101,6 @@ Current focus areas:
 
 ## License
 
-This project is open source and intended for educational and experimental use.
-A license will be added in the future.
+This project is licensed under the Apache License 2.0.
+See the [LICENSE](LICENSE) file for details.
 
