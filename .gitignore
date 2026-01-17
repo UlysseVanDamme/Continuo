@@ -8,6 +8,8 @@ ENV/
 .vscode/
 **/.vscode/
 **/.env
+**/.env.*
+!**/.env.example
 .streamlit/secrets.toml
 .DS_Store
 Thumbs.db
@@ -20,3 +22,13 @@ aws/
 *.mid
 *.midi
 *.log
+
+# Security - sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cert
+secrets.json
+credentials.json

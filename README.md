@@ -88,6 +88,31 @@ Architectural decisions may evolve as new experiments and research are introduce
 
 ---
 
+## Getting Started
+
+### Quick Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/UlysseVanDamme/Continuo.git
+   cd Continuo
+   ```
+
+2. **Set up environment variables**
+   ```bash
+   cp backend-api/.env.example backend-api/.env
+   cp pi-agent/.env.example pi-agent/.env
+   cp worker/.env.example worker/.env
+   ```
+   
+   Edit each `.env` file with your actual credentials.
+
+3. **Review security documentation**
+   - See [SECURITY.md](SECURITY.md) for deployment and security best practices
+   - See [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) for the repository security audit
+
+---
+
 ## Project Status
 
 Continuo is under active development.
