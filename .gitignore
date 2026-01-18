@@ -20,3 +20,6 @@ aws/
 *.mid
 *.midi
 *.log
+infra/terraform.tfvars
+.terraform/
+
