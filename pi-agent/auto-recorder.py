@@ -1,3 +1,9 @@
+"""
+This script listens to a specified MIDI input port, records incoming MIDI messages,
+and saves them to a MIDI file after a period of inactivity (default set to 15 seconds). 
+The saved MIDI files are uploaded to an AWS S3 bucket using credentials stored in environment.
+"""
+
 import mido
 import time
 import os
@@ -19,6 +25,7 @@ REGION = os.getenv("AWS_REGION")
 
 os.makedirs(SAVE_DIR, exist_ok=True)
 
+# Initializes AWS S3 client
 s3_client = boto3.client(
     's3',
     aws_access_key_id=AWS_ACCESS_KEY,
@@ -28,6 +35,9 @@ s3_client = boto3.client(
 
 
 def upload_to_s3(filepath):
+    """
+    Uploads local file to AWS S3 bucket using filepath.
+    """
     filename = os.path.basename(filepath)
     try:
         s3_client.upload_file(filepath, BUCKET_NAME, filename)
@@ -37,6 +47,11 @@ def upload_to_s3(filepath):
 
 
 def save_midi(buffer, start_time):
+    """
+    Safes the recorded MIDI data from the buffer to a MIDI file. 
+    Filename is based on the time of recording. 
+    After saving, it uploads to S3 using the upload_to_s3 function. 
+    """
     if not buffer: return
     timestamp = datetime.fromtimestamp(start_time).strftime('%Y-%m-%d_%H-%M-%S')
     filepath = os.path.join(SAVE_DIR, f"{timestamp}.mid")
@@ -59,13 +74,16 @@ def save_midi(buffer, start_time):
 
 
 def main():
+    """
+    Main loop that listens to MIDI input based on PORT_NAME.
+    After SILENCE_THRESHOLD (default 15 seconds) seconds of inactivity, it saves the recorded MIDI messages.
+    """
     try:
         with mido.open_input(PORT_NAME) as inport:
             buffer, recording, last_activity, session_start = [], False, time.time(), 0
             while True:
                 msg = inport.receive(block=False)
                 now = time.time()
-                print(msg)
                 if msg:
                     if msg.type == 'active_sensing': continue
                     if not recording:
