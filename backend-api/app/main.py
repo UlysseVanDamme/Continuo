@@ -9,10 +9,13 @@ from sqlalchemy import func
 from . import models, database
 from .config import settings
 
-app = FastAPI()
+# --- Configuration ---
+
+app = FastAPI(title="MIDI Session API")
 
 load_dotenv()
 
+# Only accept requests from the frontend website (configured in .env file as WEBSITE_LINK)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[settings.WEBSITE_LINK],
@@ -24,12 +27,24 @@ app.add_middleware(
 s3_client = boto3.client('s3')
 S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
+# --- Routes ---
+
 @app.get("/api/sessions")
 def read_sessions(db: Session = Depends(database.get_db)):
+    """
+    Retrieve all practice sessions from the database.
+
+    Returns a list of sessions sorted by timestamp in descending order.
+    """
     return db.query(models.PracticeSession).order_by(models.PracticeSession.timestamp.desc()).all()
+
 
 @app.get("/api/stats")
 def get_total_stats(db: Session = Depends(database.get_db)):
+    """
+    Calculate statistics for all practice sessions.
+    """
+    # Query for both count and sum in a single database hit
     stats = db.query(
         func.count(models.PracticeSession.id),
         func.sum(models.PracticeSession.note_count)
@@ -39,8 +54,16 @@ def get_total_stats(db: Session = Depends(database.get_db)):
         "total_sessions": stats[0] or 0,
         "total_notes": stats[1] or 0
     }
+
+
 @app.get("/api/midi/{session_id}", response_model=None)
 async def serve_midi(session_id: int, db: Session = Depends(database.get_db)):
+    """
+    Fetches a MIDI file from S3 and stream it to the client.
+
+    Args:
+        session_id (int): The database ID of the session.
+    """
     session_record = db.query(models.PracticeSession).filter(models.PracticeSession.id == session_id).first()
 
     if not session_record:
