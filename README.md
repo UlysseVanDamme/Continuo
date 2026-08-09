@@ -1,6 +1,6 @@
-# Continuo
+# Ostinato
 
-Continuo is an automated piano practice tracking system that records, processes, and
+Ostinato is an automated piano practice tracking system that records, processes, and
 visualizes piano practice sessions based on the midi data generated from a digital piano.
 
 The project has three main goals:
@@ -64,7 +64,7 @@ part of this repository yet.
 
 ## Project Vision
 
-While Continuo currently focuses on tracking and visualizing piano practice, the
+While Ostinato currently focuses on tracking and visualizing piano practice, the
 long-term vision is to evolve it into an experimentation platform for ML models to
 analyse MIDI practice data.
 
@@ -77,7 +77,7 @@ Some long-term goals:
 
 ## Project Status
 
-Continuo is under active development.
+Ostinato is under active development.
 
 Current focus areas:
 - Committing the frontend and the Lambda source
